@@ -5,6 +5,11 @@
     "build": "parcel build src/index.html"
   },
   "dependencies": {
+    "@pixi/core": "^6.1.2",
+    "@pixi/loaders": "^6.1.2",
+    "@pixi/sound": "^4.0.5",
+    "@pixi/ticker": "^6.1.2",
+    "@pixi/utils": "^6.1.2",
     "pixi.js": "^6.0.4"
   },
   "devDependencies": {
