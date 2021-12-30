@@ -25,8 +25,14 @@
 	// console.log('auth', auth);
 	// const analytics = getAnalytics(app);
 
+  const sleep = (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+
 	const colRef = collection(db, 'books');
 	export async function load({ page, fetch, session, context }) {
+    await sleep(5000)
 		let snapshot = await getDocs(colRef)
     let data = snapshot.docs.map((doc) => doc.data())
 		console.log(data);
