@@ -25,9 +25,11 @@ const auth = getAuth(app);
 // console.log('auth', auth);
 // const analytics = getAnalytics(app);
 
+let data = []
 const colRef = collection(db, "books")
 getDocs(colRef).then((snapshot) => {
-  console.log(snapshot.docs.map(doc => doc.data()))
+  data = snapshot.docs.map(doc => doc.data())
+  console.log(data)
 })
 
 onAuthStateChanged(auth, user => {
@@ -42,3 +44,8 @@ onAuthStateChanged(auth, user => {
 </script>
 
 <slot/>
+<ul>
+	{#each data as row}
+		<li>Title: {row.title}, Author: {row.author}</li>
+	{/each}
+</ul>
