@@ -34,7 +34,7 @@
 
     // TODO: load gets called twice, one on deployment to server and once on page load
     console.log('sleeping started')
-    await sleep(10000)
+    await sleep(5000)
     console.log('sleeping ended')
 		let snapshot = await getDocs(colRef)
     let data = snapshot.docs.map((doc) => doc.data())
