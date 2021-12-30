@@ -1,7 +1,7 @@
 <script lang="ts">
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApp, getApps } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 // import { initializeAnalytics, getAnalytics } from "@firebase/analytics";
 
@@ -21,9 +21,14 @@ const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp()
 // Init services
 const db = getFirestore(app);
 const auth = getAuth(app);
-console.log('db', db);
-console.log('auth', auth);
+// console.log('db', db);
+// console.log('auth', auth);
 // const analytics = getAnalytics(app);
+
+const colRef = collection(db, "books")
+getDocs(colRef).then((snapshot) => {
+  console.log(snapshot.docs.map(doc => doc.data()))
+})
 
 onAuthStateChanged(auth, user => {
   if (user === null) {
