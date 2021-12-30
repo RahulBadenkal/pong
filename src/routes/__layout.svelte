@@ -21,6 +21,8 @@ const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp()
 // Init services
 const db = getFirestore(app);
 const auth = getAuth(app);
+console.log('db', db);
+console.log('auth', auth);
 // const analytics = getAnalytics(app);
 
 onAuthStateChanged(auth, user => {
