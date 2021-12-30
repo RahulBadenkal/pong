@@ -32,7 +32,7 @@
 
 	const colRef = collection(db, 'books');
 	export async function load({ page, fetch, session, context }) {
-    await sleep(5000)
+    await sleep(10000)
 		let snapshot = await getDocs(colRef)
     let data = snapshot.docs.map((doc) => doc.data())
 		console.log(data);
