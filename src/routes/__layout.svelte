@@ -25,13 +25,13 @@
 	// console.log('auth', auth);
 	// const analytics = getAnalytics(app);
 
-  const sleep = (ms) => {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-
+  
 	const colRef = collection(db, 'books');
 	export async function load({ page, fetch, session, context }) {
+    const sleep = (ms) => {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     // TODO: load gets called twice, one on deployment to server and once on page load
     console.log('sleeping started')
     await sleep(10000)
