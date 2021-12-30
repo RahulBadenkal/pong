@@ -32,6 +32,7 @@
 
 	const colRef = collection(db, 'books');
 	export async function load({ page, fetch, session, context }) {
+    // TODO: load gets called twice, one on deployment to server and once on page load
     console.log('sleeping started')
     await sleep(10000)
     console.log('sleeping ended')
