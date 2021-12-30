@@ -1,0 +1,37 @@
+<script lang="ts">
+// Import the functions you need from the SDKs you need
+import { initializeApp, getApp, getApps } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+// import { initializeAnalytics, getAnalytics } from "@firebase/analytics";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB2x7zDAsz5zoC6jOoqrpnP7PRLYOtZk9s",
+  authDomain: "pong-e692c.firebaseapp.com",
+  projectId: "pong-e692c",
+  storageBucket: "pong-e692c.appspot.com",
+  messagingSenderId: "678084788906",
+  appId: "1:678084788906:web:e5b4c82be06edd6eccc6d3",
+  measurementId: "G-Y4DJ1W4J6T"
+};
+
+// Init firebase app
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp()
+
+// Init services
+const db = getFirestore(app);
+const auth = getAuth(app);
+// const analytics = getAnalytics(app);
+
+onAuthStateChanged(auth, user => {
+  if (user === null) {
+    console.log("No user");
+  }
+  else {
+    console.log(`${user} logged in`);
+  }
+})
+
+</script>
+
+<slot/>
