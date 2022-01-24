@@ -35,7 +35,7 @@
       keyMap: {},
       player1: { position: { x: 20, y: 480/2 }, velocity: { x: 0, y: 0.4 } },  // x: padding
       player2: { position: { x: 640 - 20 - 15, y: 480/2 }, velocity: { x: 0, y: 0.4 } },  // x: WIDTH - padding - padWidth,
-      ball: { position: { x: 640/2, y: 480/2 }, velocity: { x: 0.1, y: 0 } }
+      ball: { position: { x: 640/2, y: 480/2 }, velocity: { x: 0.2, y: 0 } }
     }
 
     // Add keyboard listeners
@@ -201,11 +201,11 @@
       }
     }
 
-    const _handleBallCollisionWithWall = (ballRadius: number, ball: { position: { x: number; y: number }, velocity: { x: number; y: number }}) => {
+    const _handleBallCollisionWithWall = (verticalPaddingSize: number, ballRadius: number, ball: { position: { x: number; y: number }, velocity: { x: number; y: number }}) => {
       const ballBoundingBox = _getBallBoundingBox(ballRadius, ball.position)
       const initialBallConfig = {
         position: { x: WIDTH / 2, y: HEIGHT / 2 },
-        velocity: { x: 0.4, y: 0 },
+        velocity: { x: 0.2, y: 0 },
       }
       
       // Horizontal collision
@@ -214,7 +214,7 @@
       }
 
       // Vertical collision
-      if (ballBoundingBox.y1 <= 0 || ballBoundingBox.y2 >= HEIGHT) {
+      if (ballBoundingBox.y1 <= verticalPaddingSize || ballBoundingBox.y2 >= (HEIGHT - verticalPaddingSize)) {
         return {
           position: ball.position,
           velocity: { x: ball.velocity.x, y: -1 * ball.velocity.y }
@@ -233,7 +233,7 @@
     ball.velocity = _handleBallCollisionWithPad(ballRadius, padWidth, padHeight, ball, player2)
 
     // Ball collision with wall
-    let newBall = _handleBallCollisionWithWall(ballRadius, ball)
+    let newBall = _handleBallCollisionWithWall(verticalPaddingSize, ballRadius, ball)
     ball.position = newBall.position;
     ball.velocity = newBall.velocity
 
