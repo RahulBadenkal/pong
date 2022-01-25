@@ -35,7 +35,7 @@
       keyMap: {},
       player1: { position: { x: 20, y: 480/2 }, velocity: { x: 0, y: 0.4 } },  // x: padding
       player2: { position: { x: 640 - 20 - 15, y: 480/2 }, velocity: { x: 0, y: 0.4 } },  // x: WIDTH - padding - padWidth,
-      ball: { position: { x: 640/2, y: 480/2 }, velocity: { x: 0.2, y: 0 } }
+      ball: { position: { x: 640/2, y: 480/2 }, velocity: { x: 0.1, y: 0 } }
     }
 
     // Add keyboard listeners
@@ -194,10 +194,14 @@
 
     const _handleBallCollisionWithPad = (ballRadius: number, padWidth: number, padHeight: number, ball: { position: { x: number; y: number }, velocity: { x: number; y: number } }, pad: { position: { x: number; y: number }, velocity: {x: number; y: number }}) => {
       if (_isBallCollidingWithPad(ballRadius, padWidth, padHeight, ball.position, pad.position)) {
-        return { x: -1 * ball.velocity.x, y: ball.velocity.y + pad.velocity.y }
+        const posX = ball.velocity.x > 0 ? pad.position.x - ballRadius : pad.position.x + padWidth + ballRadius
+        return { 
+          position: { x: posX, y: ball.position.y },
+          velocity: { x: -1 * ball.velocity.x, y: ball.velocity.y + pad.velocity.y }
+        }
       }
       else {
-        return ball.velocity
+        return ball
       }
     }
 
@@ -213,14 +217,19 @@
         return initialBallConfig
       }
 
-      // Vertical collision
-      if (ballBoundingBox.y1 <= verticalPaddingSize || ballBoundingBox.y2 >= (HEIGHT - verticalPaddingSize)) {
+      // Vertical top collision
+      if (ballBoundingBox.y1 <= verticalPaddingSize) {
         return {
-          position: ball.position,
+          position: { x: ball.position.x, y: verticalPaddingSize + ballRadius },
           velocity: { x: ball.velocity.x, y: -1 * ball.velocity.y }
         }
       }
-
+      if (ballBoundingBox.y2 >= (HEIGHT - verticalPaddingSize)) {
+        return {
+          position: { x: ball.position.x, y: (HEIGHT - verticalPaddingSize) - ballRadius },
+          velocity: { x: ball.velocity.x, y: -1 * ball.velocity.y }
+        }
+      }
       return ball
     }
 
@@ -229,8 +238,12 @@
     player2.position = _handlePadCollisionWithWall(player2.position)
 
     // Ball collision with pad
-    ball.velocity = _handleBallCollisionWithPad(ballRadius, padWidth, padHeight, ball, player1)
-    ball.velocity = _handleBallCollisionWithPad(ballRadius, padWidth, padHeight, ball, player2)
+    let newBall1 = _handleBallCollisionWithPad(ballRadius, padWidth, padHeight, ball, player1)
+    ball.position = newBall1.position
+    ball.velocity = newBall1.velocity
+    let newBall2 = _handleBallCollisionWithPad(ballRadius, padWidth, padHeight, ball, player2)
+    ball.position = newBall2.position
+    ball.velocity = newBall2.velocity
 
     // Ball collision with wall
     let newBall = _handleBallCollisionWithWall(verticalPaddingSize, ballRadius, ball)
